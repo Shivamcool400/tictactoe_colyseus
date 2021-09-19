@@ -169,6 +169,10 @@ const draw = drawn();
 
 
     const handleinput =(e)=>{
+        if (opponent == "waiting to join!"){
+            alert("wait for other player to join")
+            return
+        }
        console.log(current)
        // If user click an occupied square or if game is won, return
        const boardCopy = [...board];
@@ -278,6 +282,14 @@ const draw = drawn();
     </p> }
     </b>
           </p>
+          {winner || draw ? <div className="row">
+               <div className="col"></div>
+               <div className="col-sm-12 col-md-4">
+               <button className="btn btn-secondary" onClick={()=>window.location.reload()}>Exit</button>
+               </div>
+               <div className="col"></div>
+               </div> : null}
+          
            </Border>
             
         </div>
