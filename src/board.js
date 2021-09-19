@@ -12,6 +12,12 @@ function Board({name, roomid, player}) {
           if (arr[i] !== undefined) rv[i] = arr[i];
         return rv;
       }
+      const [board, setBoard] = useState(Array(9).fill(null));
+    const [opponent,setOpponent]= useState("waiting to join!")
+    const [xIsNext, setXisNext] = useState(true);
+    const [host,setHost] = useState();
+    const [person,setPerson]= useState()
+    const [current,setCurrent]=useState();
     const  calculateWinner=(squares)=> {
         const lines = [
             [0, 1, 2],
@@ -23,17 +29,23 @@ function Board({name, roomid, player}) {
             [0, 4, 8],
             [2, 4, 6],
         ];
+        if (board == null){
+            window.location.reload()
+        }
         for (let i = 0; i < lines.length; i++) {
             const [a, b, c] = lines[i];
             if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-                return squares[a];
+                if (squares[a] == "X"){
+                    return host;
+                }else {
+                    return person;
+                }
+                
             }
         }
         return null;
     }
-    const [board, setBoard] = useState(Array(9).fill(null));
-    const [xIsNext, setXisNext] = useState(true);
-    const [current,setCurrent]=useState();
+    
 const winner = calculateWinner(board)
 const modify=()=> {
     var starCountRef = db.ref('newgame' + roomid + '/board');
@@ -55,8 +67,63 @@ const modify=()=> {
         setXisNext(snapshot.val());
         // console.log(snapshot.val())
         // updateStarCount(postElement, data);
-        
-      });
+     });
+     if(player == 1){
+        var starCountRef = db.ref('newgame' + roomid + '/player2');
+        starCountRef.on('value', (snapshot) => {
+            if(snapshot.val() != null){
+                setOpponent(snapshot.val());
+            }
+          
+        //   console.log(snapshot.val())
+          // updateStarCount(postElement, data);
+
+        //   if(opponent == null){
+        //       setOpponent("waiting to join")
+        //   }
+       });
+     }
+    
+     if(player == 2){
+        var starCountRef = db.ref('newgame' + roomid + '/player1');
+        starCountRef.on('value', (snapshot) => {
+            if(snapshot.val() != null){
+                setOpponent(snapshot.val());
+            }
+            else{
+                alert("enter correct roomid")
+                window.location.reload()
+            }
+          // console.log(snapshot.val())
+          // updateStarCount(postElement, data);
+       });
+     }
+     var starCountRef = db.ref('newgame' + roomid + '/player1');
+        starCountRef.on('value', (snapshot) => {
+            if(snapshot.val() != null){
+                setHost(snapshot.val());
+            }
+          
+        //   console.log(snapshot.val())
+          // updateStarCount(postElement, data);
+
+        //   if(opponent == null){
+        //       setOpponent("waiting to join")
+        //   }
+       });
+       var starCountRef = db.ref('newgame' + roomid + '/player2');
+        starCountRef.on('value', (snapshot) => {
+            if(snapshot.val() != null){
+                setPerson(snapshot.val());
+            }
+          
+        //   console.log(snapshot.val())
+          // updateStarCount(postElement, data);
+
+        //   if(opponent == null){
+        //       setOpponent("waiting to join")
+        //   }
+       });
       
 }
 useEffect(() => {
@@ -146,7 +213,8 @@ const draw = drawn();
          
       
     
-    
+    console.log(host)
+    console.log(person)
     
     
 
@@ -165,7 +233,18 @@ const draw = drawn();
                  <br/>
                 <div className="row">
                
-               <div className="col-sm-12 col-md-6"><h4>Player Name: {name}</h4></div>
+               <div className="col-sm-12 col-md-6">
+                   <div className="row">
+                   <div className="col"></div>
+                       <div className="col-sm-12 col-md-6"><h4>Player: {name}</h4></div>
+                       <div className="col"></div>
+                   </div>
+                   <div className="row">
+                   <div className="col"></div>
+                       <div className="col-sm-12 col-md-6"><h4>Opponent: {opponent}</h4></div>
+                       <div className="col"></div>
+                   </div>
+                   </div>
                <div className="col-sm-12 col-md-6"><h4>Room code: {roomid}</h4></div>
                
            </div>
@@ -195,7 +274,7 @@ const draw = drawn();
            <br/>
            <br/>
           <p> <b>{draw ? "match is drawn" :  <p>
-      {winner ? "Winner: " + winner : "current turn: " + (xIsNext ? "Host : " : "player 2")}
+      {winner ? "Winner: " + winner : "current turn: " + (xIsNext ? host : person)}
     </p> }
     </b>
           </p>

@@ -58,16 +58,16 @@ function Login() {
     <br/>
     <div className="row">
         <div className="col"></div>
-        <div className="col-sm-12 col-md-4"><input className="name--input" type="text" onChange={(e)=> setName(e.target.value)} placeholder="Name" /></div>
-        <div className="col-sm-12 col-md-4"><button className="btn btn-secondary" onClick={loggedin}> CREATE ROOM </button></div>
+        <div className="col-sm-12 col-md-4 pt-3"><input className="name--input" type="text" onChange={(e)=> setName(e.target.value)} placeholder="Name" /></div>
+        <div className="col-sm-12 col-md-4 pt-3"><button className="btn btn-secondary" onClick={loggedin}> CREATE ROOM </button></div>
         <div className="col"></div>
         </div>
         <br/>
         <br/>
         <div className="row">
         <div className="col"></div>
-        <div className="col-sm-12 col-md-4"><input className="join--room_input" type="text" placeholder="Room-ID" onChange={(e)=> setID(e.target.value)} /></div>
-        <div className="col-sm-12 col-md-4"> <button className="btn btn-secondary" onClick={joinedin}> JOIN </button></div>
+        <div className="col-sm-12 col-md-4 pt-3"><input className="join--room_input" type="text" placeholder="Room-ID" onChange={(e)=> setID(e.target.value)} /></div>
+        <div className="col-sm-12 col-md-4 pt-3"> <button className="btn btn-secondary" onClick={joinedin}> JOIN </button></div>
         <div className="col"></div>
         </div>
     
